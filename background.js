@@ -21,6 +21,7 @@ var requestListener = function(details){
 	for (i = 0; i < details.requestHeaders.length; ++i) {
 		if (details.requestHeaders[i].name.toLowerCase() === "access-control-request-headers") {
 			accessControlRequestHeaders = details.requestHeaders[i].value	
+			// prepare for prelight request
 		}
 	}	
 	
@@ -42,6 +43,7 @@ var responseListener = function(details){
 		}
 	}
 	if(!flag) details.responseHeaders.push(rule);
+	// always add the header so that infinete can access any cross orign resource 
 
 	if (accessControlRequestHeaders) {
 
@@ -54,7 +56,7 @@ var responseListener = function(details){
 	}
 
 	details.responseHeaders.push({"name": "Access-Control-Allow-Methods", "value": "GET, PUT, POST, DELETE, HEAD, OPTIONS"});
-
+	//allow prelight request if reuqest is prelight
 	return {responseHeaders: details.responseHeaders};
 	
 };
@@ -62,14 +64,18 @@ var responseListener = function(details){
 /*On install*/
 chrome.runtime.onInstalled.addListener(function(){
 	chrome.storage.local.set({'active': true});
-	chrome.storage.local.set({'urls': ["<all_urls>"]});
+	chrome.storage.local.set({'urls': ["http://api.nsf.gov/services/*",
+	 "http://api.elsevier.com/content/search/scopus*", "http://dblp.uni-trier.de/*", "http://patents.justia.com/*",
+	 "http://api.elsevier.com/content/search/*"]});
 	chrome.storage.local.set({'exposedHeaders': ''});
 	reload();
 });
 
 /*Reload settings*/
 function reload() {
-	chrome.storage.local.get({'active': true, 'urls': ["<all_urls>"], 'exposedHeaders': ''}, function(result) {
+	chrome.storage.local.get({'active': true, 'urls': ["http://api.nsf.gov/services/*",
+	 "http://api.elsevier.com/content/search/scopus*", "http://dblp.uni-trier.de/*", "http://patents.justia.com/*",
+	 "http://api.elsevier.com/content/search/*"], 'exposedHeaders': ''}, function(result) {
 
 		exposedHeaders = result.exposedHeaders;
 
@@ -86,6 +92,9 @@ function reload() {
 				chrome.webRequest.onHeadersReceived.addListener(responseListener, {
 					urls: result.urls
 				},["blocking", "responseHeaders"]);
+				//blocking means that the request is blocked until the callback function returns
+				//header received effect finished --> callback listener function --> request response delivered
+				// --> security check  ---> generated html and javascript 
 
 				chrome.webRequest.onBeforeSendHeaders.addListener(requestListener, {
 					urls: result.urls
