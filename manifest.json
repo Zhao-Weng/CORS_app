@@ -1,17 +1,16 @@
 {
-	"name": "Allow-Control-Allow-Origin app designed for profiling app",
-	"version": "1.0.2",
+	"name": "CORS app for profiling website",
+	"version": "1.0.3",
 	"manifest_version": 2,
-	"description": "Allows to you request any site with ajax from any source. Adds to response 'Allow-Control-Allow-Origin: *' header",
+	"description": "allow cross origin resource sharing for profiling website, adds ",
 	"background": {
 		"scripts": ["background.js"]
 	},
 	"browser_action": {
 		"default_icon": "on.png",
 		"default_title": "Allow-Control-Allow-Origin"
-		// "default_popup": "popup.html"
 	},
-	"permissions": [
+"permissions": [
 		"storage",
 		"webRequest",
 		"webRequestBlocking",

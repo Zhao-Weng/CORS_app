@@ -32,7 +32,7 @@ var responseListener = function(details){
 	var flag = false,
 	rule = {
 			"name": "Access-Control-Allow-Origin",
-			"value": "http://infinite-sierra-91803.herokuapp.com"
+			"value": "*"
 		};
 
 	for (var i = 0; i < details.responseHeaders.length; ++i) {
@@ -66,7 +66,7 @@ chrome.runtime.onInstalled.addListener(function(){
 	chrome.storage.local.set({'active': true});
 	chrome.storage.local.set({'urls': ["http://api.nsf.gov/services/*",
 	 "http://api.elsevier.com/content/search/scopus*", "http://dblp.uni-trier.de/*", "http://patents.justia.com/*",
-	 "http://api.elsevier.com/content/search/*"]});
+	 "http://api.elsevier.com/content/search/*", "https://scholar.google.com/*"]});
 	chrome.storage.local.set({'exposedHeaders': ''});
 	reload();
 });
@@ -75,7 +75,7 @@ chrome.runtime.onInstalled.addListener(function(){
 function reload() {
 	chrome.storage.local.get({'active': true, 'urls': ["http://api.nsf.gov/services/*",
 	 "http://api.elsevier.com/content/search/scopus*", "http://dblp.uni-trier.de/*", "http://patents.justia.com/*",
-	 "http://api.elsevier.com/content/search/*"], 'exposedHeaders': ''}, function(result) {
+	 "http://api.elsevier.com/content/search/*", "https://scholar.google.com/*"], 'exposedHeaders': ''}, function(result) {
 
 		exposedHeaders = result.exposedHeaders;
 
