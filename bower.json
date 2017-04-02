@@ -1,0 +1,7 @@
+{
+  "name": "Allow-Control-Allow-Origin: *",
+  "dependencies": {
+    "ionic": "~0.9.27",
+    "jquery": "~2.1.1"
+  }
+}
